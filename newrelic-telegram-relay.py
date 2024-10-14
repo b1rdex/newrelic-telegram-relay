@@ -2,40 +2,35 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from telegram import send_telegram_message
 import json
+import os
 
 app = Flask(__name__)
 api = Api(app)
 
-
-with open('config/telegram.json') as f:
-    telegram_config = json.load(f)
-
-token = telegram_config['botToken']
-chat_ids = telegram_config['receiverChatIds']
-
+token = os.environ['TG_TOKEN']
+chat_id = os.environ['TG_CHAT']
 
 class WebHook(Resource):
     def post(self):
         payload = request.json
         print('Received webhook.')
         print(payload)
-        for chat_id in chat_ids:
-            print('Sending message to telegram chat: ' + chat_id)
-            state = payload.get('current_state')
-            if state == 'open':
-                state_title = '🚨 ' + \
-                    payload.get('event_type') + ' ' + state
-            else:
-                state_title = '✅ ' + \
-                    payload.get('event_type') + ' ' + state
-            message = "*" + state_title + '*\n' \
-                '*Policy*: ' + payload.get('policy_name') + '\n' \
-                '*Details*: ' + payload.get('details') + '\n' \
-                '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
-                '[Chart](' + payload.get('violation_chart_url') + ')'
-            send_telegram_message(token, chat_id, message)
-        return 'OK'
+        print('Sending message to telegram chat: ' + chat_id)
+        state = payload.get('current_state')
+        if state == 'open':
+            state_title = '🚨 ' + \
+                payload.get('event_type') + ' ' + state
+        else:
+            state_title = '✅ ' + \
+                payload.get('event_type') + ' ' + state
+        message = "*" + state_title + '*\n' \
+            '*Policy*: ' + payload.get('policy_name') + '\n' \
+            '*Details*: ' + payload.get('details') + '\n' \
+            '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
+            '[Chart](' + payload.get('violation_chart_url') + ')'
+        send_telegram_message(token, chat_id, message)
 
+        return 'OK'
 
 api.add_resource(WebHook, '/webhook')
 
