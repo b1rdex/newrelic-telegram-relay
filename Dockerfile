@@ -12,4 +12,4 @@ RUN pipenv install --deploy --ignore-pipfile
 COPY newrelic-telegram-relay.py .
 COPY telegram.py .
 
-CMD ["python", "newrelic-telegram-relay.py"]
+CMD ["pipenv", "run", "python", "newrelic-telegram-relay.py"]
