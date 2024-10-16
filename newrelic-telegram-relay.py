@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from telegram import send_telegram_message
-import json
 import os
 
 app = Flask(__name__)
@@ -27,7 +26,8 @@ class WebHook(Resource):
             '*Policy*: ' + payload.get('policy_name') + '\n' \
             '*Details*: ' + payload.get('details') + '\n' \
             '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
-            '[Chart](' + payload.get('violation_chart_url') + ')'
+            '[](' + payload.get('violation_chart_url') + ')' \
+            '[Incident Link](' + payload.get('incident_url') + ')' + '\n'
         send_telegram_message(token, chat_id, message)
 
         return 'OK'
