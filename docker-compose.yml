@@ -1,0 +1,7 @@
+services:
+  relay:
+    image: ghcr.io/b1rdex/newrelic-telegram-relay:latest
+    restart: unless-stopped
+    environment:
+      TG_TOKEN: ${TG_TOKEN:?}
+      TG_CHAT: ${TG_CHAT:?}
