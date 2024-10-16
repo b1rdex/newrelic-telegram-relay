@@ -5,5 +5,7 @@ services:
     environment:
       TG_TOKEN: ${TG_TOKEN:?}
       TG_CHAT: ${TG_CHAT:?}
+      # this is needed to show print() in docker logs
+      PYTHONUNBUFFERED: 1
     ports:
       - "5000:5000"
