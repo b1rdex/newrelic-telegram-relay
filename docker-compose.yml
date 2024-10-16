@@ -5,3 +5,5 @@ services:
     environment:
       TG_TOKEN: ${TG_TOKEN:?}
       TG_CHAT: ${TG_CHAT:?}
+    ports:
+      - "5000:5000"
