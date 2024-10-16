@@ -26,7 +26,7 @@ class WebHook(Resource):
             '*Policy*: ' + payload.get('policy_name') + '\n' \
             '*Details*: ' + payload.get('details') + '\n' \
             '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
-            '[](' + payload.get('violation_chart_url') + ')' \
+            '[\u200B](' + payload.get('violation_chart_url') + ')' \
             '[Incident Link](' + payload.get('incident_url') + ')' + '\n'
         send_telegram_message(token, chat_id, message)
 
